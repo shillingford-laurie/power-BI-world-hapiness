@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>World Happiness Report · 2021–2025</title>
+
+  <!-- Polices Google Fonts : une police "display" pour les titres, une police de texte, une police mono pour les chiffres -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Notre feuille de style -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Librairie jsVectorMap : pour la carte du monde interactive (slide 3) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap/dist/jsvectormap.min.css">
+</head>
+<body>
+
+  <!-- Barre de progression fine en haut de l'écran : se remplit au fil des slides -->
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+  <!-- Boutons de navigation précédent / suivant, fixes en bas de l'écran -->
+  <button class="nav-btn nav-prev" id="btnPrev" aria-label="Slide précédente" style="margin-bottom: 2rem;">←</button>
+  <button class="nav-btn nav-next" id="btnNext" aria-label="Slide suivante" style="margin-bottom: 2rem;">→</button>
+
+  <main class="deck" id="deck">
+
+    <!-- Slide 1 -->
+    <section class="slide" id="slide-1" data-slide="1">
+      <div class="slide-inner slide-title">
+        <p class="eyebrow">World Happiness Report · Simplon · 2026</p>
+        <h1 class="display-xl">Rapport Data World Happiness</h1>
+        <p class="lede">Cinq ans de données mondiales sur le bien-être, explorées pays par pays,
+          facteur par facteur, pour comprendre ce qui fait vraiment la différence.</p>
+      </div>
+      <span class="page-number">01&nbsp;/&nbsp;11</span>
+    </section>
+
+    <!-- Slide 2 -->
+    <section class="slide" id="slide-2" data-slide="2">
+      <div class="slide-inner">
+        <p class="eyebrow">Bonus — Fig. 00bis</p>
+        <h2 class="display-lg">Notre propre indice de bonheur</h2>
+        <p class="caption" style="margin-bottom: 2.2rem;">Parce qu'une bonne équipe, ça se mesure aussi.</p>
+        <div class="kpi-row team-row">
+          <div class="kpi-card">
+            <p class="kpi-label">Liberté de choix</p>
+            <p class="kpi-value">Brice</p>
+            <p class="kpi-sub">Le meta-prompteur de l'équipe</p>
+          </div>
+          <div class="kpi-card">
+            <p class="kpi-label">Soutien social</p>
+            <p class="kpi-value">Davit</p>
+            <p class="kpi-sub">Toujours là pour déboguer une formule DAX à 23h</p>
+          </div>
+          <div class="kpi-card">
+            <p class="kpi-label">Espérance de vie (du projet)</p>
+            <p class="kpi-value">Laurie</p>
+            <p class="kpi-sub">A sauvé le fichier .pbix in extremis</p>
+          </div>
+          <div class="kpi-card">
+            <p class="kpi-label">PIB par habitant</p>
+            <p class="kpi-value">Zohair</p>
+            <p class="kpi-sub">Le plus grand fournisseur de café de l'équipe</p>
+          </div>
+        </div>
+      </div>
+      <span class="page-number">02&nbsp;/&nbsp;11</span>
+    </section>
+
+    <!-- Slide 3 -->
+    <section class="slide" id="slide-3" data-slide="3">
+      <div class="slide-inner">
+        <p class="eyebrow">00 — Sommaire</p>
+        <h2 class="display-lg">Cinq questions pour raconter une histoire</h2>
+        <ol class="story-list">
+          <li><span class="story-num">01</span><span>Où en est le bonheur dans le monde aujourd'hui&nbsp;?</span></li>
+          <li><span class="story-num">02</span><span>Qui domine le classement, et comment ça évolue&nbsp;?</span></li>
+          <li><span class="story-num">03</span><span>Le bonheur est-il une question d'argent&nbsp;?</span></li>
+          <li><span class="story-num">04</span><span>Quels ingrédients comptent le plus dans le score&nbsp;?</span></li>
+          <li><span class="story-num">05</span><span>Comment se construit le score, pays par pays&nbsp;?</span></li>
+        </ol>
+      </div>
+      <span class="page-number">03&nbsp;/&nbsp;11</span>
+    </section>
+
+    <!-- Slide 4 -->
+    <section class="slide" id="slide-4" data-slide="4">
+      <div class="slide-inner slide-wide">
+        <p class="eyebrow">01 — Cartographie</p>
+        <h2 class="display-lg">Où en est le bonheur en 2025&nbsp;?</h2>
+        <div class="chart-row">
+          <div class="chart-box chart-box-map">
+            <div id="worldMap" class="map-container"></div>
+          </div>
+          <div class="side-panel">
+            <p class="caption">Score de bonheur (Life Ladder, échelle de 0 à 10) par pays,
+              d'après la dernière année disponible du rapport.</p>
+            <div class="legend-gradient" aria-hidden="true">
+              <span>Score faible</span>
+              <div class="legend-bar"></div>
+              <span>Score élevé</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <span class="page-number">04&nbsp;/&nbsp;11</span>
+    </section>
+
+    <!-- Slide 5 -->
+    <section class="slide" id="slide-5" data-slide="5">
+      <div class="slide-inner slide-wide">
+        <p class="eyebrow">02 — Classement</p>
+        <h2 class="display-lg">Le podium mondial, année après année</h2>
+        <div class="chart-row">
+          <div class="chart-box">
+            <canvas id="top10Chart"></canvas>
+          </div>
+          <div class="side-panel">
+            <div class="year-display" id="yearDisplay">2021</div>
+            <button class="play-btn" id="playBtn">▶ Lancer l'animation</button>
+            <div class="year-buttons" id="yearButtons"><!-- généré par script.js --></div>
+          </div>
+        </div>
+      </div>
+      <span class="page-number">05&nbsp;/&nbsp;11</span>
+    </section>
+
+    <!-- Slide 6 -->
+    <section class="slide" id="slide-6" data-slide="6">
+      <div class="slide-inner slide-wide">
+        <p class="eyebrow">03 — Corrélation</p>
+        <h2 class="display-lg">Le bonheur est-il une question d'argent&nbsp;?</h2>
+        <div class="chart-row">
+          <div class="chart-box">
+            <canvas id="scatterChart"></canvas>
+          </div>
+          <div class="side-panel">
+            <p class="caption">Chaque bulle est un pays (2025). Position horizontale : contribution
+              du PIB au score. Position verticale : score de bonheur. Taille de la bulle :
+              contribution de l'espérance de vie en bonne santé. Couleur : continent.</p>
+          </div>
+        </div>
+      </div>
+      <span class="page-number">06&nbsp;/&nbsp;11</span>
+    </section>
+
+    <!-- Slide 7 -->
+    <section class="slide" id="slide-7" data-slide="7">
+      <div class="slide-inner slide-wide">
+        <p class="eyebrow">04 — Facteurs</p>
+        <h2 class="display-lg">Ce qui pèse vraiment dans le score</h2>
+        <div class="chart-row">
+          <div class="chart-box">
+            <div id="treemapChart"></div>
+          </div>
+          <div class="side-panel">
+            <p class="caption">Contribution moyenne de chaque facteur au score de bonheur mondial,
+              tous pays et toutes années confondus (2021–2025). Plus la case est grande,
+              plus le facteur pèse dans le score.</p>
+          </div>
+        </div>
+      </div>
+      <span class="page-number">07&nbsp;/&nbsp;11</span>
+    </section>
+
+    <!-- Slide 8 -->
+    <section class="slide" id="slide-8" data-slide="8">
+      <div class="slide-inner slide-wide">
+        <p class="eyebrow">05 — Décomposition</p>
+        <h2 class="display-lg">Comment se construit un score, pays par pays</h2>
+        <div class="chart-row">
+          <div class="chart-box">
+            <div id="waterfallChart"></div>
+          </div>
+          <div class="side-panel">
+            <label for="countrySelect" class="select-label">Choisir un pays</label>
+            <select id="countrySelect" class="country-select"><!-- généré par script.js --></select>
+            <p class="caption">Chaque barre ajoute la contribution d'un facteur au score de base
+              ("Dystopie + résidu"), jusqu'au score total du pays (2025).</p>
+          </div>
+        </div>
+      </div>
+      <span class="page-number">08&nbsp;/&nbsp;11</span>
+    </section>
+
+    <!-- Slide 9 -->
+    <section class="slide" id="slide-9" data-slide="9">
+      <div class="slide-inner">
+        <p class="eyebrow">06 — Indicateurs clés</p>
+        <h2 class="display-lg">Les chiffres qui résument 2025</h2>
+        <div class="kpi-row" id="kpiRow"><!-- généré par script.js --></div>
+      </div>
+      <span class="page-number">09&nbsp;/&nbsp;11</span>
+    </section>
+
+    <!-- Slide 10 -->
+    <section class="slide" id="slide-10" data-slide="10">
+      <div class="slide-inner slide-title">
+        <p class="eyebrow">07 — Conclusion (1)</p>
+        <h2 class="display-lg">Recommandation</h2>
+          <div class="capsule">
+            <p class="lede reveal-step">1. Ne pas miser uniquement sur la croissance économique.</p>
+            <p class="lede reveal-step">2. Investir dans le lien social.</p>
+            <p class="lede reveal-step">3. Prioriser la santé publique.</p>
+            <p class="lede reveal-step">4. Protéger les libertés individuelles.</p>
+            <p class="lede reveal-step">5. Nuancer l’usage de ces données</p>
+          </div>
+      </div>
+      <span class="page-number">10&nbsp;/&nbsp;11</span>
+    </section>
+
+    <!-- Slide 11 -->
+    <section class="slide" id="slide-11" data-slide="11">
+      <div class="slide-inner slide-title">
+        <p class="eyebrow">07 — Conclusion (2)</p>
+        <h2 class="display-lg">Limites de l’analyse</h2>  
+          <div class="capsule">
+            <p class="lede reveal-step">- Étude restreinte à 2021-2025 par choix méthodologique (données complètes uniquement sur cette période)</p>
+            <p class="lede reveal-step">- Le score “Générosité” et “Corruption” ont un poids moyen faible, mais peuvent compter beaucoup plus dans certains pays précis </p>
+            <p class="lede reveal-step">- Piste d’amélioration : croiser avec d’autres bases (santé mentale, inégalités) pour affiner l’interprétation</p>
+          </div>
+        <p class="credit-line" style="margin-top: 2rem;">Merci de votre attention</p>
+      </div>
+      <span class="page-number">11&nbsp;/&nbsp;11</span>
+    </section>
+  </main>
+
+  <!-- Librairies externes (via CDN) pour les graphiques -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsvectormap"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsvectormap/dist/maps/world.js"></script>
+
+  <!-- Notre code -->
+  <script src="script.js"></script>
+</body>
+</html>

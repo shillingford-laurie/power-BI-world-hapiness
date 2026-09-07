@@ -1,0 +1,416 @@
+/* ============================================================
+   TOKENS — palette "Corporate Tech" et typographie
+   Modifiez ces variables pour changer les couleurs partout d'un coup.
+   ============================================================ */
+:root {
+  --bleu-nuit: #0f2756;        /* fond principal, très sombre */
+  --bleu-nuit-clair: #131D33;  /* fond des cartes / panneaux */
+  --gris-ardoise: #4A5568;     /* bordures, séparateurs */
+  --gris-ardoise-clair: #fafcfe; /* texte secondaire */
+  --blanc-casse: #F3F1EA;      /* texte principal sur fond sombre */
+  --accent: #3E7BFA;           /* bleu électrique : notre unique couleur d'accent */
+  --accent-vif: #6E9CFF;       /* variante plus claire de l'accent, pour les hovers */
+  --accent-dim: rgba(62, 123, 250, 0.14);
+  --vert-clair: #8FE3A6;       /* vert clair : pour la diapo équipe (prénoms) */
+  --vert-fonce: #1E8C4E;       /* vert foncé : pour la diapo équipe (prénoms) */
+
+  --police-titre: 'Space Grotesk', sans-serif;
+  --police-texte: 'IBM Plex Sans', sans-serif;
+  --police-chiffres: 'IBM Plex Mono', monospace;
+}
+
+/* ============================================================
+   RESET DE BASE
+   ============================================================ */
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bleu-nuit);
+  color: var(--blanc-casse);
+  font-family: var(--police-texte);
+  overflow: hidden; /* on navigue slide par slide, pas de scroll de page */
+  height: 100%;
+}
+
+h1, h2, h3 { font-family: var(--police-titre); margin: 0; }
+p { margin: 0; }
+
+/* Respecte les préférences d'accessibilité : réduit les animations si demandé */
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* ============================================================
+   STRUCTURE DES SLIDES
+   Chaque <section class="slide"> occupe tout l'écran.
+   Une seule slide a la classe "active" à la fois (gérée en JS).
+   ============================================================ */
+.deck {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6vh 8vw;
+  opacity: 0;
+  pointer-events: none;
+  /* état de départ avant l'animation d'entrée */
+  transform: translateY(24px);
+}
+
+.slide.active {
+  opacity: 1;
+  pointer-events: auto;
+  animation: slide-enter 0.6s ease forwards;
+}
+
+@keyframes slide-enter {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.slide-inner {
+  max-width: 900px;
+  width: 100%;
+}
+
+.slide-wide { max-width: 1200px; }
+
+.slide-title { text-align: center; margin: 0 auto; }
+
+/* ============================================================
+   TYPOGRAPHIE
+   ============================================================ */
+.eyebrow {
+  font-family: var(--police-chiffres);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.78rem;
+  color: var(--accent-vif);
+  margin-bottom: 1.1rem;
+}
+
+.display-xl {
+  font-size: clamp(2.4rem, 5vw, 4.2rem);
+  line-height: 1.08;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.display-lg {
+  font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+  line-height: 1.15;
+  font-weight: 600;
+  margin-bottom: 2rem;
+}
+
+.lede {
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: var(--gris-ardoise-clair);
+  max-width: 640px;
+  margin: 0 auto 2rem auto;
+}
+
+.caption {
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--gris-ardoise-clair);
+}
+
+.credit-line {
+  font-family: var(--police-chiffres);
+  font-size: 0.85rem;
+  color: var(--gris-ardoise-clair);
+  letter-spacing: 0.03em;
+}
+
+/* ============================================================
+   SLIDE 2 — Liste des 5 questions (sommaire)
+   La numérotation ici a du sens : c'est un vrai enchaînement narratif.
+   ============================================================ */
+.story-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.story-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 1.4rem;
+  font-size: 1.25rem;
+  border-bottom: 1px solid var(--gris-ardoise);
+  padding-bottom: 1.1rem;
+}
+
+.story-num {
+  font-family: var(--police-chiffres);
+  color: var(--accent-vif);
+  font-size: 1rem;
+  min-width: 2.2rem;
+}
+
+/* ============================================================
+   MISE EN PAGE DES SLIDES AVEC GRAPHIQUE (chart + panneau latéral)
+   ============================================================ */
+.chart-row {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+.chart-box {
+  background: var(--bleu-nuit-clair);
+  border: 1px solid var(--gris-ardoise);
+  border-radius: 12px;
+  padding: 1.5rem;
+  height: 46vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chart-box canvas { max-height: 100%; }
+
+.chart-box-map { padding: 0.5rem; }
+
+.map-container { width: 100%; height: 100%; }
+
+#treemapChart, #waterfallChart { width: 100%; height: 100%; }
+
+.side-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* ============================================================
+   SLIDE 3 — Légende de la carte
+   ============================================================ */
+.legend-gradient {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.78rem;
+  color: var(--gris-ardoise-clair);
+}
+
+.legend-bar {
+  flex: 1;
+  height: 10px;
+  border-radius: 5px;
+  background: linear-gradient(90deg, var(--vert-clair), var(--vert-fonce));
+}
+
+/* ============================================================
+   SLIDE 4 — Bar chart race (Top 10)
+   ============================================================ */
+.year-display {
+  font-family: var(--police-chiffres);
+  font-size: 3rem;
+  color: var(--accent-vif);
+  font-weight: 500;
+}
+
+.play-btn {
+  font-family: var(--police-texte);
+  font-weight: 600;
+  font-size: 0.95rem;
+  background: var(--accent);
+  color: var(--blanc-casse);
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem 1.2rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.play-btn:hover { background: var(--accent-vif); }
+
+.year-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.year-buttons button {
+  font-family: var(--police-chiffres);
+  background: transparent;
+  color: var(--gris-ardoise-clair);
+  border: 1px solid var(--gris-ardoise);
+  border-radius: 6px;
+  padding: 0.4rem 0.7rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.year-buttons button.active,
+.year-buttons button:hover {
+  color: var(--blanc-casse);
+  border-color: var(--accent);
+  background: var(--accent-dim);
+}
+
+/* ============================================================
+   SLIDE 7 — Sélecteur de pays
+   ============================================================ */
+.select-label {
+  font-size: 0.85rem;
+  color: var(--gris-ardoise-clair);
+}
+
+.country-select {
+  font-family: var(--police-texte);
+  font-size: 1rem;
+  background: var(--bleu-nuit-clair);
+  color: var(--blanc-casse);
+  border: 1px solid var(--gris-ardoise);
+  border-radius: 8px;
+  padding: 0.7rem 0.9rem;
+}
+
+/* ============================================================
+   SLIDE 8 — Cartes KPI
+   ============================================================ */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.kpi-card {
+  background: var(--bleu-nuit-clair);
+  border: 1px solid var(--gris-ardoise);
+  border-radius: 12px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+
+.kpi-label {
+  font-size: 0.85rem;
+  color: var(--gris-ardoise-clair);
+  margin-bottom: 0.8rem;
+}
+
+.kpi-value {
+  font-family: var(--police-chiffres);
+  font-size: 2.1rem;
+  color: var(--accent-vif);
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+}
+
+.kpi-sub {
+  font-size: 0.9rem;
+  color: var(--gris-ardoise-clair);
+}
+
+/* ============================================================
+   SLIDE 2 (BONUS) — Indice de bonheur de l'équipe
+   Réutilise le style des cartes KPI, avec 4 colonnes et des
+   prénoms colorés en vert clair / vert foncé en alternance.
+   ============================================================ */
+.kpi-row.team-row {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.kpi-value.vert-clair { color: var(--vert-clair); }
+.kpi-value.vert-fonce { color: var(--vert-fonce); }
+
+/* ============================================================
+   SLIDES 10 & 11 — Apparition des points un par un
+   Chaque point est masqué par défaut ; la classe "shown" (ajoutée
+   par script.js au clic sur "Suivant") le fait apparaître en
+   fondu, comme si on avançait d'une mini-diapo à chaque clic.
+   ============================================================ */
+.reveal-step {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.reveal-step.shown {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================================
+   NAVIGATION (flèches + barre de progression + numéro de page)
+   ============================================================ */
+.progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 3px;
+  background: rgba(255,255,255,0.06);
+  z-index: 50;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 11%;
+  background: var(--accent);
+  transition: width 0.5s ease;
+}
+
+.nav-btn {
+  position: fixed;
+  bottom: 3.2vh;
+  z-index: 50;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--gris-ardoise);
+  background: rgba(19, 29, 51, 0.85);
+  color: var(--blanc-casse);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-btn:hover { border-color: var(--accent); color: var(--accent-vif); }
+.nav-btn:disabled { opacity: 0.25; cursor: default; }
+
+.nav-prev { left: 3vw; }
+.nav-next { right: 3vw; }
+
+/* Numéro de page : présent sur chaque slide, ancré en bas à droite */
+.page-number {
+  position: absolute;
+  bottom: 2.4vh;
+  right: 3vw;
+  font-family: var(--police-chiffres);
+  font-size: 0.8rem;
+  color: var(--gris-ardoise-clair);
+  letter-spacing: 0.05em;
+}
+
+.capsule {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+/* ============================================================
+   RESPONSIVE — écrans étroits (tablette / mobile)
+   ============================================================ */
+@media (max-width: 860px) {
+  .chart-row { grid-template-columns: 1fr; }
+  .chart-box { height: 34vh; }
+  .kpi-row { grid-template-columns: 1fr; }
+  .kpi-row.team-row { grid-template-columns: 1fr; }
+  .nav-btn { width: 40px; height: 40px; }
+}
